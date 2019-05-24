@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<component
+	name="org.opentoutatice.addon.quota.listener.contrib" version="1.0">
+
+	<require>org.nuxeo.ecm.core.event.EventServiceComponent</require>
+
+	<extension
+		target="org.nuxeo.ecm.core.event.EventServiceComponent"
+		point="listener">
+
+		<listener name="ottcQuotaListener" async="false"
+			postCommit="false" enabled="true"
+			class="org.opentoutatice.addon.quota.listener.QuotaListener"
+			priority="10">
+			<event>aboutToCreate</event>
+		</listener>
+
+	</extension>
+
+
+
+
+</component>
