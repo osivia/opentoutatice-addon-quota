@@ -23,7 +23,7 @@ public class QuotaListener implements EventListener {
 	public void handleEvent(Event event) throws ClientException {
 
 		if ((event.getContext() instanceof DocumentEventContext)
-				&& DocumentEventTypes.ABOUT_TO_CREATE.equals(event.getName())) {
+				&& ( DocumentEventTypes.ABOUT_TO_CREATE.equals(event.getName())) || (DocumentEventTypes.ABOUT_TO_IMPORT.equals(event.getName())) || (DocumentEventTypes.ABOUT_TO_COPY.equals(event.getName()))) {
 			DocumentEventContext evtCtx = (DocumentEventContext) event.getContext();
 
 			DocumentModel docToCreate = evtCtx.getSourceDocument();

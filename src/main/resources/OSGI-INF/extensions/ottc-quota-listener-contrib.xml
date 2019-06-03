@@ -13,6 +13,8 @@
 			class="org.opentoutatice.addon.quota.listener.QuotaListener"
 			priority="10">
 			<event>aboutToCreate</event>
+			<event>aboutToImport</event>
+			<event>aboutToCopy</event>			
 		</listener>
 
 	</extension>
