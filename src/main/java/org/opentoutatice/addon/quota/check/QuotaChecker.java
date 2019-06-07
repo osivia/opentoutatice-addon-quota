@@ -3,6 +3,8 @@
  */
 package org.opentoutatice.addon.quota.check;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.Blob;
@@ -12,7 +14,6 @@ import org.nuxeo.ecm.core.api.PathRef;
 import org.opentoutatice.addon.quota.check.exception.QuotaExceededException;
 import org.opentoutatice.addon.quota.check.util.BlobsSizeComputer;
 import org.opentoutatice.addon.quota.check.util.QuotaResolver;
-import org.opentoutatice.addon.quota.check.util.BlobsSizeComputer.QueryLanguage;
 
 /**
  * @author dchevrier <chevrier.david.pro@gmail.com>
@@ -50,23 +51,40 @@ public class QuotaChecker {
 				log.debug(String.format("Quota %s found.", quota.getPathAsString()));
 			}
 
-			Long quota_ = (Long) quota.getPropertyValue("qt:maxSize");
+			Long quotaValue = ((Long) quota.getPropertyValue("qt:maxSize")) ;
+			
+			if(quotaValue != -1) { // limited space
+				quotaValue = quotaValue * 1000000; // convert from Megabytes to bytes.
+				
+				
+				// Get root space for computing current quota.
+				List<DocumentModel> parentDocuments = session.getParentDocuments(blobPointer.getParentRef());
+				
+				DocumentModel rootSpace = null;
+				for(DocumentModel element : parentDocuments) {
+					if(element.hasFacet("Space") && !element.getType().equals("Domain")) {
 
-			// Get current tree size
-			Long treeSize = getTreeSizeFor(session, new PathRef(quota.getPathAsString()));
-
-			// Check
-			if (treeSize + blob.getLength() > quota_) {
-				if (log.isDebugEnabled()) {
-					log.debug(String.format("treeSize + blob.lenght = %d + %d = %d > quota = %d", treeSize,
-							blob.getLength(), treeSize + blob.getLength(), quota_));
+						rootSpace = element;
+						break;
+					}
 				}
-				throw new QuotaExceededException(quota_);
-			}
+				
+				// Get current tree size
+				Long treeSize = getTreeSizeFor(session, new PathRef(rootSpace.getPathAsString()));
 
-			if (log.isDebugEnabled()) {
-				log.debug(String.format("treeSize + blob.lenght = %d + %d = %d < quota = %d", treeSize,
-						blob.getLength(), treeSize + blob.getLength(), quota_));
+				// Check
+				if (treeSize + blob.getLength() > quotaValue) {
+					if (log.isDebugEnabled()) {
+						log.debug(String.format("treeSize + blob.lenght = %d + %d = %d > quota = %d", treeSize,
+								blob.getLength(), treeSize + blob.getLength(), quotaValue));
+					}
+					throw new QuotaExceededException(quotaValue);
+				}
+
+				if (log.isDebugEnabled()) {
+					log.debug(String.format("treeSize + blob.lenght = %d + %d = %d < quota = %d", treeSize,
+							blob.getLength(), treeSize + blob.getLength(), quotaValue));
+				}
 			}
 		} else {
 			if (log.isInfoEnabled()) {

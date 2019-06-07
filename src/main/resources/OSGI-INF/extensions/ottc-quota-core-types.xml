@@ -22,6 +22,17 @@
 		<doctype name="Workspace" append="true">
 			<facet name="Quota" />
 		</doctype>
+		
+		<doctype name="Domain" append="true">
+			<facet name="Quota" />
+		</doctype>
+		<doctype name="WorkspaceRoot" append="true">
+			<facet name="Quota" />
+		</doctype>
+		<doctype name="UserWorkspacesRoot" append="true">
+			<facet name="Quota" />
+		</doctype>				
+		
 
 	</extension>
 

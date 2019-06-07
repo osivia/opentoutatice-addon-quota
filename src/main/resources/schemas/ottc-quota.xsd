@@ -4,6 +4,6 @@
 	xmlns:nxs="http://www.nuxeo.org/ecm/project/schemas/ottc/quota"
 	targetNamespace="http://www.nuxeo.org/ecm/project/schemas/ottc/quota">
 	
-	<xs:element name="maxSize" type="xs:long" default="0" />	
+	<xs:element name="maxSize" type="xs:long" />	
 	
 </xs:schema>

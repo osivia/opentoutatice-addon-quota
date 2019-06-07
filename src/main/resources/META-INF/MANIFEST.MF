@@ -6,5 +6,6 @@ Bundle-Localization: plugin
 Bundle-Category: stateful
 Nuxeo-Component: OSGI-INF/extensions/ottc-quota-operations-contrib.xml,
  OSGI-INF/extensions/ottc-quota-core-types.xml,
- OSGI-INF/extensions/ottc-quota-listener-contrib.xml
+ OSGI-INF/extensions/ottc-quota-listener-contrib.xml,
+ OSGI-INF/extensions/ottc-quota-ui-contrib.xml
  
