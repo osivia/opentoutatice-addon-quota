@@ -36,40 +36,59 @@ public class QuotaResolver {
 		return instance;
 	}
 
-	public DocumentModel getQuotaFor(CoreSession session, DocumentModel blobPointer) {
+	public long getQuotaFor(CoreSession session, DocumentModel blobPointer, boolean isFetchable) {
+
+		UnrestrictedQuotaResolver uQuota = new UnrestrictedQuotaResolver(session, blobPointer, isFetchable);
+		uQuota.runUnrestricted();
 		
-		UnrestrictedQuotaResolver uQuota = new UnrestrictedQuotaResolver(session, blobPointer);
-        uQuota.runUnrestricted();
-        
-        return uQuota.getQuotaHolder();
+		Long quotaValue = -1L;
+
+		DocumentModel uQuotaDoc = uQuota.getQuotaHolder();
+		if( uQuotaDoc != null)
+			quotaValue = ((Long) uQuotaDoc.getPropertyValue("qt:maxSize")) ;
 		
+		if( quotaValue != -1)
+			quotaValue = quotaValue *  1048576L; // convert from Megabytes to bytes.
+
+		return quotaValue;
+
 	}
 
-    /**
+	/**
 	 * 
 	 */
-    private static class UnrestrictedQuotaResolver extends UnrestrictedSessionRunner {
+	private static class UnrestrictedQuotaResolver extends UnrestrictedSessionRunner {
 
-    	DocumentModel quotaHolder;
-		private DocumentModel blobPointer;
-    	
+		DocumentModel quotaHolder;
+		private DocumentModel doc;
+		private boolean isFetched = false;
+
 		/**
 		 * @param session
 		 */
-		protected UnrestrictedQuotaResolver(CoreSession session, DocumentModel blobPointer) {
+		protected UnrestrictedQuotaResolver(CoreSession session, DocumentModel doc, boolean isFetched) {
 			super(session);
-			this.blobPointer = blobPointer;
+			this.doc = doc;
+			this.isFetched = isFetched;
 		}
 
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see org.nuxeo.ecm.core.api.UnrestrictedSessionRunner#run()
 		 */
 		@Override
 		public void run() throws ClientException {
-			// blobPointer doesn't yet exist and can not be found via session
-			Path parentPath = blobPointer.getPath().removeLastSegments(1); // FIXME: Robustness / root
-			DocumentModel parent = session.getDocument(new PathRef(parentPath.toString()));
-			
+
+			DocumentModel firstDoc = null;
+			if (isFetched) {
+				firstDoc = doc;
+			} else {
+				// current doc doesn't yet exist and can not be found via session
+				Path parentPath = doc.getPath().removeLastSegments(1); // FIXME: Robustness / root
+				firstDoc = session.getDocument(new PathRef(parentPath.toString()));
+			}
+
 			Filter quotaFilter = new Filter() {
 
 				private static final long serialVersionUID = 1L;
@@ -79,25 +98,25 @@ public class QuotaResolver {
 					return doc.hasFacet("Quota");
 				}
 			};
-			
+
 			// For debug log
 			long beg_ = System.currentTimeMillis();
-			
-			DocumentModelList quotaHolders = ToutaticeDocumentHelper.getParentList(session, parent, quotaFilter, true, false,
-					true);
-			
-			for(DocumentModel q : quotaHolders) {
-				if(q.getPropertyValue("qt:maxSize") != null) {
+
+			DocumentModelList quotaHolders = ToutaticeDocumentHelper.getParentList(session, firstDoc, quotaFilter, true,
+					false, true);
+
+			for (DocumentModel q : quotaHolders) {
+				if (q.getPropertyValue("qt:maxSize") != null) {
 					quotaHolder = q;
 					break;
 				}
 			}
-			
-			if(log.isDebugEnabled()) {
+
+			if (log.isDebugEnabled()) {
 				long end_ = System.currentTimeMillis();
 				log.debug(String.format("Quota serch executed in %d ms.", end_ - beg_));
 			}
-			
+
 		}
 
 		/**
@@ -106,6 +125,6 @@ public class QuotaResolver {
 		public DocumentModel getQuotaHolder() {
 			return quotaHolder;
 		}
-    	
-    }
+
+	}
 }

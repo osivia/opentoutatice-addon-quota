@@ -35,7 +35,7 @@ public class BlobsSizeComputer {
 	}
 	
 	// FIXME: exclude versions & trashed?
-	protected static final String GET_DESCENDANTS_NXQL = "select ecm:uuid from Document where %s '%s'";
+	protected static final String GET_DESCENDANTS_NXQL = "select ecm:uuid from Document where ((%s '%s') AND (ecm:primaryType != 'File' OR ecm:isLatestVersion = 1 ))";
 	
 	protected ElasticSearchAdmin esAdmin;
 	
