@@ -58,7 +58,8 @@ public class QuotaTest {
 
 	static final String[][] users = { { "VirtualAdministrator", "secret" }, { "Administrator", "Administrator" } };
 	static final int nb_docs_ = 10;
-	static final String blobs_folder_ = "/home/david/work/projects/osv/ws/opentoutatice-addon-quota/src/test/resources/blobs/";
+	// FIXME: replace part with current ws path
+	static final String blobs_folder_ = "/home/david/work/projects/osv/ws/opentoutatice-addons/opentoutatice-addon-quota/src/test/resources/blobs/";
 	static final String[] blobs_ = { blobs_folder_.concat("01.pdf"), blobs_folder_.concat("02.odt") };
 	
 	private long importedBlobsLength = 0;
@@ -140,9 +141,13 @@ public class QuotaTest {
 
 	@Test
 	public void testTreeSize() throws Exception {
+		// FIXME: return type changed: String -> FileBlob
 		String size = (String) this.automationSession.getClient().getSession(users[0][0], users[0][1])
 				.newRequest(QuotaInfo.ID).setInput("/default-domain").execute();
 
+//		FileBlob res = (FileBlob) this.automationSession.getClient().getSession(users[0][0], users[0][1])
+//				.newRequest(QuotaInfo.ID).setInput("/default-domain").execute();
+		
 		Assert.assertNotNull(size);
 		Long long_ = null;
 		try {
@@ -178,6 +183,8 @@ public class QuotaTest {
 	
 	@Test
 	public void testQuotaExceeded() {
+		Assert.assertTrue(this.quota.hasFacet("Quota"));
+		
 		this.quota.setPropertyValue("qt:maxSize", 700000);
 		this.session.saveDocument(this.quota);
 		

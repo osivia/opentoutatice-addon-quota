@@ -28,6 +28,9 @@ public class QuotaChecker {
 	protected QuotaResolver qResolver;
 
 	protected BlobsSizeComputer bsComputer;
+	
+	private static final String DEFAULT_ERROR_EXCEEDED_MESSAGE = "Quota exceeded";
+	private static final String ERROR_EXCEEDED_LOCALIZED_MESSAGE = "label.error.quota.exceeded";
 
 	private QuotaChecker() {
 		this.qResolver = QuotaResolver.get();
@@ -70,7 +73,7 @@ public class QuotaChecker {
 					log.debug(String.format("treeSize + blob.lenght = %d + %d = %d > quota = %d", treeSize,
 							blob.getLength(), treeSize + blob.getLength(), quotaValue));
 				}
-				throw new QuotaExceededException(quotaValue);
+				throw new QuotaExceededException(DEFAULT_ERROR_EXCEEDED_MESSAGE, ERROR_EXCEEDED_LOCALIZED_MESSAGE, null);
 			}
 
 			if (log.isDebugEnabled()) {

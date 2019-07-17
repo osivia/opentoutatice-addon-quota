@@ -4,3 +4,4 @@
 target
 build
 bin
+/dev-deploy.sh

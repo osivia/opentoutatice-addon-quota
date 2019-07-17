@@ -1,0 +1,30 @@
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:nxh="http://nuxeo.org/nxweb/html">
+  
+  <a4j:outputPanel id="facesStatusMessagePanel" ajaxRendered="true" layout="block">
+  
+   <ui:param name="componentsErrorsMsg" value="#{messages['feedback.correctErrors']} #{messages['toutatice.label.portal.view.global.errors']}" />
+   <ui:param name="errorsMsgs" value="#{pvGlobalExceptions.toHandle() ? pvGlobalExceptions.getLocalizedMessage() : componentsErrorsMsg}" />
+    
+   <div class="facesStatusMessage">
+      <c:if test="#{facesContext.maximumSeverity.ordinal >= 2}">
+        <div class="alert alert-danger">
+            <i class="glyphicons halflings warning-sign"></i> 
+            <span class="text-danger">
+            	<!-- escape="false" enable HTML rendering -->
+            	<h:outputText value="#{errorsMsgs}" escape="false"/>
+            </span>
+            <ul id="labels">
+            </ul>
+        </div>
+      </c:if>
+    </div>
+
+  </a4j:outputPanel>
+
+</ui:composition>
