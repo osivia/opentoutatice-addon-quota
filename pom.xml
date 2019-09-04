@@ -10,13 +10,13 @@
 	<packaging>jar</packaging>
 	<name>Quota addon</name>
 	<description>Quota addon based on Elastisearch</description>
-	<version>4.4-SNAPSHOT</version>
+	<version>4.9-SNAPSHOT</version>
 
 	<properties>
-		<nuxeo.version>6.0-HF45</nuxeo.version>
+		<nuxeo.version>6.1.1</nuxeo.version>
 		<elasticsearch.transport.client.version>1.1.2</elasticsearch.transport.client.version>
 		<elasticsearch.rest.client.version>6.6.2</elasticsearch.rest.client.version>
-		<ottc.version>4.4-SNAPSHOT</ottc.version>
+		<ottc.version>4.7.17</ottc.version>
 		<junit.version>4.12</junit.version>
 	</properties>
 
