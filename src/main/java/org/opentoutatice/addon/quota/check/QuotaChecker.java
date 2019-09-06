@@ -57,7 +57,7 @@ public class QuotaChecker {
 
 			DocumentModel rootSpace = null;
 			for (DocumentModel element : parentDocuments) {
-				if (element.hasFacet("Space") && !element.getType().equals("Domain")) {
+				if ((element.hasFacet("Space") || element.hasFacet("SuperSpace"))  && !element.getType().equals("Domain")) {
 
 					rootSpace = element;
 					break;
