@@ -34,8 +34,10 @@ public class BlobsSizeComputer {
 		NXQL, ES;
 	}
 	
-	// FIXME: exclude versions & trashed?
-	protected static final String GET_DESCENDANTS_NXQL = "select ecm:uuid from Document where ((%s '%s') AND (ecm:primaryType != 'File' OR ecm:isLatestVersion = 1 ))";
+
+    protected static final String GET_DESCENDANTS_NXQL_AUTO_VERSIONING = "select ecm:uuid from Document where ((%s '%s') AND (ecm:primaryType != 'File' OR ecm:isLatestVersion = 1 ))";
+    protected static final String GET_DESCENDANTS_NXQL_DEFAULT = "select ecm:uuid from Document where ((%s '%s') AND ecm:isVersion = 0)";
+
 	
 	protected ElasticSearchAdmin esAdmin;
 	
@@ -67,7 +69,6 @@ public class BlobsSizeComputer {
 	}
 	
 	public Long getTreeSizeFrom(CoreSession session, DocumentRef docRef) {
-		// TODO: try with NXQL for query part (nested and sum aggregates are not implemented in Nx)
 		
 		final SearchRequestBuilder request = this.esAdmin.getClient()
 				.prepareSearch(this.esAdmin.getIndexNameForRepository(session.getRepositoryName()))
@@ -79,7 +80,13 @@ public class BlobsSizeComputer {
 		switch (this.queryLanguage) {
 		case NXQL:
 			String clause = DocumentRef.PATH == docRef.type() ? " ecm:path startswith " : " ecm:ancestorId = ";
-			queryBuilder = NxqlQueryConverter.toESQueryBuilder(String.format(GET_DESCENDANTS_NXQL, clause, docRef.toString()), session);
+			String NXQLClause;
+			if( "auto_versioning".equals("ottc.quota.computingPolicy"))
+			    NXQLClause = GET_DESCENDANTS_NXQL_AUTO_VERSIONING;
+			else
+                NXQLClause = GET_DESCENDANTS_NXQL_DEFAULT;
+			
+			queryBuilder = NxqlQueryConverter.toESQueryBuilder(String.format(NXQLClause, clause, docRef.toString()), session);
 			break;
 
 		case ES:

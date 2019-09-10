@@ -14,7 +14,7 @@
 			priority="10">
 			<event>aboutToCreate</event>
 			<event>aboutToImport</event>
-			<event>aboutToCopy</event>			
+                        <event>aboutToCopy</event>
 		</listener>
 
 	</extension>
