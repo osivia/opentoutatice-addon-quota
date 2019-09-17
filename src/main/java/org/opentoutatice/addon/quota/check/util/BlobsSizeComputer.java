@@ -16,6 +16,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.nested.Nested;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedBuilder;
 import org.elasticsearch.search.aggregations.metrics.sum.Sum;
+import org.elasticsearch.search.aggregations.metrics.sum.SumBuilder;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.elasticsearch.api.ElasticSearchAdmin;
@@ -100,7 +101,7 @@ public class BlobsSizeComputer {
 		request.setQuery(queryBuilder);
 		
 		// Sum aggregation
-		NestedBuilder aggregation = AggregationBuilders.nested("nested_field").path("file:content").subAggregation(AggregationBuilders.sum("tree_size").field("length"));
+		SumBuilder aggregation = AggregationBuilders.sum("tree_size").field("quota:length");
 		request.addAggregation(aggregation);
 
 		if (log.isDebugEnabled()) {
@@ -112,7 +113,7 @@ public class BlobsSizeComputer {
 			log.debug(searchResponse.toString());
 		}
 
-		Sum treeSize = ((Nested) searchResponse.getAggregations().get("nested_field")).getAggregations().get("tree_size");
+		Sum treeSize = searchResponse.getAggregations().get("tree_size");
 
 		return treeSize != null ? (long) treeSize.getValue() : null;
 	}

@@ -17,6 +17,7 @@
 		<elasticsearch.transport.client.version>1.1.2</elasticsearch.transport.client.version>
 		<elasticsearch.rest.client.version>6.6.2</elasticsearch.rest.client.version>
 		<ottc.version>4.7.17</ottc.version>
+		<ottc.es.custom.version>4.7.17.1</ottc.es.custom.version>
 		<junit.version>4.12</junit.version>
 	</properties>
 
@@ -58,6 +59,11 @@
 			<groupId>opentoutatice-ecm.platform</groupId>
 			<artifactId>opentoutatice-ecm-platform-core</artifactId>
 			<version>${ottc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>opentoutatice-ecm.elasticsearch-customizer</groupId>
+			<artifactId>opentoutatice-addon-elasticsearch-customizer-ecm</artifactId>
+			<version>${ottc.es.custom.version}</version>
 		</dependency>
 
 		<!-- Tests -->

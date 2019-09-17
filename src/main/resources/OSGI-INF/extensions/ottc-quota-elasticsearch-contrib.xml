@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="org.opentoutatice.addon.quota.elasticsearch">
+
+    <require>fr.toutatice.ecm.es.customizer.registry.ESCustomizersServiceRegistry</require>
+
+    <extension target="fr.toutatice.ecm.es.customizer.registry.ESCustomizersServiceRegistry" point="writers">
+        <writer class="org.opentoutatice.addon.quota.elasticsearch.CustomizedJsonESDocumentWriter" />
+    </extension>
+    
+</component>
