@@ -17,7 +17,7 @@ import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
 import fr.toutatice.ecm.platform.core.helper.ToutaticeDocumentHelper;
 
 /**
- * @author dchevrier <chevrier.david.pro@gmail.com>
+ * @author dchevrier 
  *
  */
 public class QuotaResolver {

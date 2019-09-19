@@ -6,7 +6,7 @@ package org.opentoutatice.addon.quota.check.exception;
 import org.nuxeo.ecm.core.api.RecoverableClientException;
 
 /**
- * @author dchevrier <chevrier.david.pro@gmail.com>
+ * @author dchevrier 
  *
  */
 public class QuotaExceededException extends RecoverableClientException {

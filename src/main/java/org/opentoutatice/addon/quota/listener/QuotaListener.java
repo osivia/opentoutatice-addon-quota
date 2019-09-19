@@ -22,7 +22,7 @@ import fr.toutatice.ecm.platform.core.helper.ToutaticeDocumentHelper;
 import fr.toutatice.ecm.platform.core.listener.ToutaticeBulkDocumentCopiedListener;
 
 /**
- * @author dchevrier <chevrier.david.pro@gmail.com>
+ * @author dchevrier 
  *
  */
 public class QuotaListener implements EventListener {

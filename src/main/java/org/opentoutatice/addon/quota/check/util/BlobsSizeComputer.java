@@ -24,7 +24,7 @@ import org.nuxeo.elasticsearch.query.NxqlQueryConverter;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * @author dchevrier <chevrier.david.pro@gmail.com>
+ * @author dchevrier 
  *
  */
 public class BlobsSizeComputer {

@@ -23,7 +23,7 @@ import fr.toutatice.ecm.platform.core.constants.ToutaticeNuxeoStudioConst;
 import fr.toutatice.ecm.platform.core.helper.ToutaticeDocumentHelper;
 
 /**
- * @author dchevrier <chevrier.david.pro@gmail.com>
+ * @author dchevrier 
  *
  */
 public class QuotaChecker {
