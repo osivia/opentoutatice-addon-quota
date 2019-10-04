@@ -9,7 +9,8 @@
 		point="schema">
 
 		<schema name="quota" prefix="qt" src="schemas/ottc-quota.xsd" />
-
+		<schema name="quota_computation" prefix="qtc" src="schemas/ottc-quota-computation.xsd" />
+		
 	</extension>
 
 	<extension target="org.nuxeo.ecm.core.schema.TypeService"
@@ -21,6 +22,7 @@
 		
 		<doctype name="Workspace" append="true">
 			<facet name="Quota" />
+			<schema name="quota_computation" />
 		</doctype>
 		
 		<doctype name="Domain" append="true">
