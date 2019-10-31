@@ -5,6 +5,7 @@
 	targetNamespace="http://www.nuxeo.org/ecm/project/schemas/ottc/quota-computation">
 	
 	<xs:element name="currentSize" type="xs:long" />
-	<xs:element name="lastDateCheck" type="xs:dateTime" />	
+	<xs:element name="lastDateCheck" type="xs:dateTime" />
+	<xs:element name="uuid" type="xs:string" />
 	
 </xs:schema>

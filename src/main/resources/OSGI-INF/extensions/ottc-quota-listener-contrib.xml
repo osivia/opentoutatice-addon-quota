@@ -14,12 +14,24 @@
 			priority="10">
 			<event>aboutToCreate</event>
 			<event>aboutToImport</event>
-                        <event>aboutToCopy</event>
+            <event>aboutToCopy</event>
 		</listener>
+		
+		<listener name="ottcQuotaRecomputeOnAddListener" async="true"
+			postCommit="true" enabled="true"
+			class="org.opentoutatice.addon.quota.listener.QuotaRecomputeListener"
+			priority="1000">
+			<event>documentCreated</event>
+			<event>documentCreatedByCopy</event>
+			<event>documentImported</event>			
+		</listener>
+		<listener name="ottcQuotaRecomputeOnDeleteListener" async="false"
+			postCommit="false" enabled="true"
+			class="org.opentoutatice.addon.quota.listener.QuotaRecomputeListener"
+			priority="1000">
+            <event>aboutToRemove</event>
+		</listener>	
 
 	</extension>
-
-
-
 
 </component>
