@@ -17,7 +17,6 @@ import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
 import org.opentoutatice.addon.quota.check.util.BlobsSizeComputer;
 import org.opentoutatice.addon.quota.check.util.QuotaResolver;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -44,6 +43,9 @@ public class QuotaInfo {
 
 		Long treeSize = BlobsSizeComputer.get().getTreeSizeFrom(this.session, docRef);
 		QuotaItems.put("treesize", treeSize);
+		
+		Long trashedTreeSize = BlobsSizeComputer.get().getTreeSizeFrom(this.session, docRef, true);
+		QuotaItems.put("trashedtreesize", trashedTreeSize);
 		
 		long quotaValue = QuotaResolver.get().getQuotaFor(session, document, true);
 		QuotaItems.put("quota", quotaValue);

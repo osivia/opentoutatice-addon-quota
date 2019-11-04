@@ -8,13 +8,9 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermFilterBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.nested.Nested;
-import org.elasticsearch.search.aggregations.bucket.nested.NestedBuilder;
 import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.aggregations.metrics.sum.SumBuilder;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -38,7 +34,7 @@ public class BlobsSizeComputer {
 
     protected static final String GET_DESCENDANTS_NXQL_AUTO_VERSIONING = "select ecm:uuid from Document where ((%s '%s') AND (ecm:primaryType != 'File' OR ecm:isLatestVersion = 1 ))";
     protected static final String GET_DESCENDANTS_NXQL_DEFAULT = "select ecm:uuid from Document where ((%s '%s') AND ecm:isVersion = 0)";
-
+    protected static final String TRASH_QUERY = " AND ecm:currentLifeCycleState = 'deleted' ";
 	
 	protected ElasticSearchAdmin esAdmin;
 	
@@ -68,8 +64,12 @@ public class BlobsSizeComputer {
 		}
 		return instance;
 	}
-	
+
 	public Long getTreeSizeFrom(CoreSession session, DocumentRef docRef) {
+		return getTreeSizeFrom(session, docRef, false);
+	}
+	
+	public Long getTreeSizeFrom(CoreSession session, DocumentRef docRef, boolean trashOnly) {
 		
 		final SearchRequestBuilder request = this.esAdmin.getClient()
 				.prepareSearch(this.esAdmin.getIndexNameForRepository(session.getRepositoryName()))
@@ -82,10 +82,18 @@ public class BlobsSizeComputer {
 		case NXQL:
 			String clause = DocumentRef.PATH == docRef.type() ? " ecm:path startswith " : " ecm:ancestorId = ";
 			String NXQLClause;
-			if( "auto_versioning".equals("ottc.quota.computingPolicy"))
+			if( "auto_versioning".equals("ottc.quota.computingPolicy")) {
 			    NXQLClause = GET_DESCENDANTS_NXQL_AUTO_VERSIONING;
-			else
+			    if(trashOnly) {
+			    	NXQLClause = NXQLClause.concat(TRASH_QUERY);
+			    }
+			}
+			else {
                 NXQLClause = GET_DESCENDANTS_NXQL_DEFAULT;
+			    if(trashOnly) {
+			    	NXQLClause = NXQLClause.concat(TRASH_QUERY);
+			    }
+			}
 			
 			queryBuilder = NxqlQueryConverter.toESQueryBuilder(String.format(NXQLClause, clause, docRef.toString()), session);
 			break;
