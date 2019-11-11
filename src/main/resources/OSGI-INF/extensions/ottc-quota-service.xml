@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<component name="org.opentoutatice.addon.quota.service">
+
+	<require>fr.toutatice.ecm.platform.service.quota.QuotaService</require>
+
+	<service>
+		<provide
+			interface="fr.toutatice.ecm.platform.service.quota.QuotaService" />
+	</service>
+
+	<implementation 
+		class="org.opentoutatice.addon.quota.service.QuotaServiceImpl" />
+</component>

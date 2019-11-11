@@ -14,7 +14,7 @@
 		<nuxeo.version>6.1.1</nuxeo.version>
 		<elasticsearch.transport.client.version>1.1.2</elasticsearch.transport.client.version>
 		<elasticsearch.rest.client.version>6.6.2</elasticsearch.rest.client.version>
-		<ottc.version>4.4.18</ottc.version>
+		<ottc.version>4.4.19.2</ottc.version>
 		<ottc.es.custom.version>4.4.18</ottc.es.custom.version>
 		<junit.version>4.12</junit.version>
 	</properties>
@@ -56,6 +56,11 @@
 		<dependency>
 			<groupId>opentoutatice-ecm.platform</groupId>
 			<artifactId>opentoutatice-ecm-platform-core</artifactId>
+			<version>${ottc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>opentoutatice-ecm.platform</groupId>
+			<artifactId>opentoutatice-ecm-platform-services</artifactId>
 			<version>${ottc.version}</version>
 		</dependency>
 		<dependency>
