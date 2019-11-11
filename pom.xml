@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<name>Quota addon</name>
 	<description>Quota addon based on Elastisearch</description>
-	<version>4.4-SNAPSHOT</version>
+	<version>4.4.19.2</version>
 
 	<properties>
 		<nuxeo.version>6.1.1</nuxeo.version>
@@ -171,7 +171,7 @@
 		<url>https://github.com/osivia/opentoutatice-addon-quota</url>
 		<connection>scm:git:ssh://git@github.com/osivia/opentoutatice-addon-quota.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/osivia/opentoutatice-addon-quota.git</developerConnection>     
-		<tag>HEAD</tag> 
+		<tag>4.4.19.2</tag> 
 	</scm>
 
 	<distributionManagement>
