@@ -14,6 +14,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
+import org.opentoutatice.addon.quota.check.util.BlobSizeInfos;
 import org.opentoutatice.addon.quota.check.util.BlobsSizeComputer;
 import org.opentoutatice.addon.quota.check.util.QuotaResolver;
 
@@ -41,10 +42,14 @@ public class QuotaInfo {
         
         // TODO : check standard errors (404,403)
         DocumentModel document = session.getDocument(docRef);
+        
+        BlobSizeInfos infos = BlobsSizeComputer.get().getTreeSizeFrom(this.session, docRef);
 
-		Long treeSize = BlobsSizeComputer.get().getTreeSizeFrom(this.session, docRef);
-		QuotaItems.put("treesize", treeSize);
-		
+
+        QuotaItems.put("number", infos.getNumber());
+        
+		QuotaItems.put("treesize", infos.getSize());
+
 		long quotaValue = QuotaResolver.get().getQuotaFor(session, document, true);
 		QuotaItems.put("quota", quotaValue);
  

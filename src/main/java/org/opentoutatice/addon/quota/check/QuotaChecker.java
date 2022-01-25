@@ -16,6 +16,7 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.Filter;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.opentoutatice.addon.quota.check.exception.QuotaExceededException;
+import org.opentoutatice.addon.quota.check.util.BlobSizeInfos;
 import org.opentoutatice.addon.quota.check.util.BlobsSizeComputer;
 import org.opentoutatice.addon.quota.check.util.QuotaResolver;
 
@@ -72,7 +73,7 @@ public class QuotaChecker {
 					rootSpace = parentDocuments.get(0);
 
 			// Get current tree size
-			Long treeSize = getTreeSizeFor(session, new PathRef(rootSpace.getPathAsString()));
+			Long treeSize = getTreeSizeFor(session, new PathRef(rootSpace.getPathAsString())).getSize();
 
 			// Check
 			if (treeSize +fileSize > quotaValue) {
@@ -94,7 +95,7 @@ public class QuotaChecker {
 		return this.qResolver.getQuotaFor(session, blobPointer, false);
 	}
 
-	public Long getTreeSizeFor(CoreSession session, PathRef pathRef) {
+	public BlobSizeInfos getTreeSizeFor(CoreSession session, PathRef pathRef) {
 		return this.bsComputer.getTreeSizeFrom(session, pathRef);
 	}
 	

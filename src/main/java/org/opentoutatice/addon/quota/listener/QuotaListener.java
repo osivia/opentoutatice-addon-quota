@@ -52,7 +52,7 @@ public class QuotaListener implements EventListener {
             if( DocumentEventTypes.ABOUT_TO_COPY.equals(event.getName()) &&  docToCreate.hasFacet("Folderish"))    {
                 // folderish : get source size
                 DocumentModel srcFolder = (DocumentModel) event.getContext().getArguments()[0];  
-                size = QuotaChecker.get().getTreeSizeFor(evtCtx.getCoreSession(), new PathRef(srcFolder.getPath().toString()));
+                size = QuotaChecker.get().getTreeSizeFor(evtCtx.getCoreSession(), new PathRef(srcFolder.getPath().toString())).getSize();
            }  else {
                 // BlobHolder is defined for document having file 
                 BlobHolder bHolder = docToCreate.getAdapter(BlobHolder.class);
